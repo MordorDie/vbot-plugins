@@ -15,7 +15,7 @@ def create_list(path):
         elif path:
             list.append(f"file;{v}")
 
-    with open(f"{path if path else ''}__dir__", "w") as f:
+    with open(f"{path if path else ''}__dir__.txt", "w") as f:
         f.write("\n".join(list))
 
 

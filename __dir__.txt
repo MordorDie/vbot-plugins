@@ -16,6 +16,7 @@ dir;random_fun
 dir;memes
 dir;bot_about
 dir;video
+dir;.git
 dir;current_time
 dir;text_utils
 dir;tts
