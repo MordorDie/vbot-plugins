@@ -1,5 +1,5 @@
 1.0
-6.0
+7.0
 Калькулятор
 Калькулятор.
 Myzon (https://github.com/Myzon)
