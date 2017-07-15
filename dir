@@ -11,12 +11,10 @@ dir;send_out
 dir;exchange_rate
 dir;available_cmds
 dir;news
-dir;generator
 dir;random_fun
 dir;memes
 dir;bot_about
 dir;video
-dir;.git
 dir;current_time
 dir;text_utils
 dir;tts

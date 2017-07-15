@@ -5,7 +5,7 @@ def create_list(path):
     list = []
 
     for v in os.listdir(path):
-        if v == "__dir__":
+        if v == "dir" or v == ".git":
             continue
 
         if os.path.isdir(v):
