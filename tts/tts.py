@@ -8,6 +8,7 @@ from langdetect import DetectorFactory
 from langdetect.lang_detect_exception import LangDetectException
 
 from plugin_system import Plugin
+from utils import load_settings
 
 ADDITIONAL_LANGUAGES = {
     'uk': 'Ukrainian',
@@ -23,6 +24,11 @@ plugin = Plugin('Голос', usage=["скажи [выражение] - бот �
                                 "голосовое сообщение на основе текста голосом Yandex"])
 
 FAIL_MSG = 'Я не смог это произнести :('
+
+
+@plugin.on_init()
+async def on_init(vk):
+    plugin.temp_data['s'] = load_settings(plugin)
 
 
 @plugin.on_command('скажи')
@@ -45,7 +51,7 @@ async def say_text_yandex(msg, args):
     # Используется озвучка яндекса. Класс yTTS
     try:
         text, lang = await args_validation(msg, args, 'yandex')
-        tts = yTTS(text=text, lang=lang)
+        tts = yTTS(text=text, lang=lang, key=plugin.temp_data['s'].get("key", ""))
         tmp_file = await tts.save()
         audio_file = tmp_file.read()
         await upload_voice(msg, audio_file)
