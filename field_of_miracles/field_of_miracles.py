@@ -41,7 +41,7 @@ async def letter1(msg, args):
         return await msg.answer("Произошла ошибка!")
 
     if cl == d.answer:
-        score = len(set(d.answer)) - len(d.open)
+        score = max(len(set(d.answer)) - len(d.open), 1)
 
         d.score += score
         await db.update(d)

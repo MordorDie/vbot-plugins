@@ -29,9 +29,12 @@ async def setup_counter(vk):
 
 
 @plugin.after_command()
-async def before(result, msg: Message, args):
+async def after(result, msg: Message, args):
     plugin.temp_data['messages'] += 1
     plugin.temp_data['messages_24h'] += 1
+
+    if result is False:
+        return
 
     plugin.temp_data['commands'][msg.command] = plugin.temp_data['commands'].get(msg.command, 0) + 1
 
