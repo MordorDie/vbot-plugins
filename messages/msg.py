@@ -125,7 +125,7 @@ async def to_admin(msg, args):
             'message': f"Вам сообщение от {sender_data['first_name']} {sender_data['last_name']}!\n\"{data}\"",
         }
 
-        if "attach1" in msg.brief_attaches:
+        if msg.brief_attaches:
             val['attachment'] = ",".join(str(x) for x in await msg.full_attaches)
 
         result = await msg.vk.method('messages.send', val)
@@ -175,7 +175,7 @@ async def write_msg(msg, args):
         'message': f"Вам сообщение от {sender_data['first_name']} {sender_data['last_name']}!\n\"{data}\"",
     }
 
-    if "attach1" in msg.brief_attaches:
+    if msg.brief_attaches:
         val['attachment'] = ",".join(str(x) for x in await msg.full_attaches)
 
     result = await msg.vk.method('messages.send', val)

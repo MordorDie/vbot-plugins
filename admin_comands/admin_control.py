@@ -29,12 +29,12 @@ async def add_to_whitelist(msg, args):
 
 
 @plugin.on_command('добавить в чёрный список')
-async def add_to_admins(msg, args):
+async def add_to_blacklist(msg, args):
     return await add_to_list(msg, args, "blacklisted")
 
 
 @plugin.on_command('сделать админом')
-async def add_to_blacklist(msg, args):
+async def add_to_admins(msg, args):
     return await add_to_list(msg, args, "admin")
 
 

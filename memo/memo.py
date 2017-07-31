@@ -79,11 +79,13 @@ async def memo_read(msg, args):
     if len(attachments) <= 10:
         return await msg.answer('Вот что я вспомнил:\n' + text, attachment=attachment)
 
-    await msg.answer('Вот что я вспомнил:\n' + text, nowait=True)
+    await msg.send('Вот что я вспомнил:\n' + text, nowait=True)
 
-    c = 0
-    for i in range(math.ceil(len(attachments) / 10)):
-        await msg.answer('', attachment=",".join(str(a) for a in attachments[i * 10: i * 10 + 10]), nowait=True)
+    amount = math.ceil(len(attachments) / 10)
+    for i in range(amount - 1):
+        await msg.send('', attachment=",".join(str(a) for a in attachments[i * 10: i * 10 + 10]))
+
+    await msg.answer('', attachment=",".join(str(a) for a in attachments[i * 10: i * 10 + 10]))
 
 
 @plugin.on_command('забудь')

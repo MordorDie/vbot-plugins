@@ -8,7 +8,7 @@ from langdetect import DetectorFactory
 from langdetect.lang_detect_exception import LangDetectException
 
 from plugin_system import Plugin
-from utils import load_settings
+from utils import load_settings, SenderUser
 
 ADDITIONAL_LANGUAGES = {
     'uk': 'Ukrainian',
@@ -51,7 +51,12 @@ async def say_text_yandex(msg, args):
     # Используется озвучка яндекса. Класс yTTS
     try:
         text, lang = await args_validation(msg, args, 'yandex')
-        tts = yTTS(text=text, lang=lang, key=plugin.temp_data['s'].get("key", ""))
+
+        kwargs = {}
+        if plugin.temp_data['s'].get('key', ''):
+            kwargs['key'] = plugin.temp_data['s']['key']
+
+        tts = yTTS(text=text, lang=lang, **kwargs)
         tmp_file = await tts.save()
         audio_file = tmp_file.read()
         await upload_voice(msg, audio_file)
@@ -88,9 +93,11 @@ async def get_data(url, params=None):
 
 
 async def upload_voice(msg, audio_file):
+    sender = SenderUser(msg.vk.current_user)
+
     # Получаем URL для загрузки аудио сообщения
     upload_method = 'docs.getUploadServer'
-    upload_server = await msg.vk.method(upload_method, {'type': 'audio_message'})
+    upload_server = await msg.vk.method(upload_method, {'type': 'audio_message'}, send_from=sender)
     url = upload_server.get('upload_url')
     if not url:
         return await msg.answer(FAIL_MSG)
@@ -101,12 +108,14 @@ async def upload_voice(msg, audio_file):
     async with aiohttp.ClientSession() as session:
         async with session.post(url, data=form_data) as resp:
             file_url = await resp.json()
+
             file = file_url.get('file')
+
             if not file:
                 return await msg.answer(FAIL_MSG + 'NOT_FILE')
 
     # Сохраняем файл в документы (чтобы можно было прикрепить к сообщению)
-    saved_data = await msg.vk.method('docs.save', {'file': file})
+    saved_data = await msg.vk.method('docs.save', {'file': file}, send_from=sender)
     if not saved_data:
         return await msg.answer(FAIL_MSG)
     # Получаем первый элемент, так как мы сохранили 1 файл

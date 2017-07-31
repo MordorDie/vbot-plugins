@@ -15,7 +15,7 @@ plugin = Plugin("Погода",
 class Weather(BaseModel):
     user_id = peewee.BigIntegerField(unique=True)
 
-    date = peewee.DateTimeField(default=datetime.datetime.now())
+    date = peewee.DateTimeField(default=datetime.datetime.now)
 
 Weather.create_table(True)
 

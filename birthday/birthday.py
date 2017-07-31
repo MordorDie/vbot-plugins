@@ -101,7 +101,7 @@ async def check(msg, args):
 
     for m in messages:
         if len(message) + len(m) >= MAX_MESSAGE_LENGTH:
-            await msg.answer(message, nowait=True)
+            await msg.send(message)
 
             message = ""
 

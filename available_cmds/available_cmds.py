@@ -34,9 +34,11 @@ async def call(msg, args):
 
         if result:
             for u in all_usages[1:]:
-                await msg.vk.method("messages.send", {"user_id": msg.user_id, "message": u}, nowait=True)
+                await msg.vk.method("messages.send", {"user_id": msg.user_id, "message": u})
 
-            return await msg.answer("Команды отправлены в ЛС!", nowait=True)
+            return await msg.answer("Команды отправлены в ЛС!")
 
-    for u in all_usages:
-        await msg.answer(u, nowait=True)
+    for u in all_usages[:-1]:
+        await msg.send(u)
+
+    await msg.answer(all_usages[-1])
