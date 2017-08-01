@@ -37,12 +37,12 @@ async def meme(msg, args):
 
     img = None
 
-    if not photo or not photo.link:
+    if not photo or not photo.url:
         img = Image.open(io.BytesIO(plugin.temp_data['bg']))
 
     if not img:
         async with aiohttp.ClientSession() as sess:
-            async with sess.get(photo.link) as response:
+            async with sess.get(photo.url) as response:
                 img = Image.open(io.BytesIO(await response.read()))
 
     if not img:
