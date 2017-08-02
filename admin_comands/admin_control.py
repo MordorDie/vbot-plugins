@@ -69,16 +69,27 @@ async def show_admins(msg, args):
 
 
 async def show_list(msg, args, role):
-    if not await get_or_none(Role.select(Role.user_id).where(Role.role == role)):
+    group_list = [str(u.user_id) for u in await db.execute(Role.select(Role.user_id).where(Role.role == role))]
+
+    if not group_list:
         return await msg.answer(f'Группа {role} пуста 🙄')
-    else:
-        message = f"Список пользователей {role}:\n"
 
-        for u in await db.execute(Role.select(Role.user_id).where(Role.role == role)):
-            users = await msg.vk.method('users.get',  {'user_ids': u.user_id, 'fields': 'online'})
-            message += f"[id{users[0]['id']}|{users[0]['first_name']} {users[0]['last_name']}] {' - онлайн' if users[0]['online'] else ''}\n"
+    users = []
+    message = f"Список пользователей {role}:\n"
 
-        return await msg.answer(message)
+    i = 0
+    while i * 1000 < len(group_list):
+        user_ids = ",".join(group_list[i * 1000: (i + 1) * 1000])
+
+        for u in await msg.vk.method('users.get',  {'user_ids': user_ids, 'fields': 'online'}):
+            users.append(u)
+
+        i += 1
+
+    for u in users:
+        message += f"[id{u['id']}|{u['first_name']} {u['last_name']}] {' - онлайн' if u['online'] else ''}\n"
+
+    return await msg.answer(message)
 
 
 async def add_to_list(msg, args, role):
