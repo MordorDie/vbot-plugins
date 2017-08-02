@@ -69,15 +69,16 @@ async def show_admins(msg, args):
 
 
 async def show_list(msg, args, role):
-    if not await get_or_none(Role, user_id=msg.user_id, role="admin"):
-        return
+    if not await get_or_none(Role.select(Role.user_id).where(Role.role == role)):
+        return await msg.answer(f'Группа {role} пуста 🙄')
+    else:
+        message = f"Список пользователей {role}:\n"
 
-    message = f"Список пользователей {role}:\n"
+        for u in await db.execute(Role.select(Role.user_id).where(Role.role == role)):
+            users = await msg.vk.method('users.get',  {'user_ids': u.user_id, 'fields': 'online'})
+            message += f"[id{users[0]['id']}|{users[0]['first_name']} {users[0]['last_name']}] {' - онлайн' if users[0]['online'] else ''}\n"
 
-    for u in await db.execute(Role.select(Role.user_id).where(Role.role == role)):
-        message += f"{u.user_id}, "
-
-    return await msg.answer(message)
+        return await msg.answer(message)
 
 
 async def add_to_list(msg, args, role):
