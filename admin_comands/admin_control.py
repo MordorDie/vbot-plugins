@@ -64,7 +64,7 @@ async def show_whitelisted(msg, args):
 
 
 @plugin.on_command('админы')
-async def show_blacklisted(msg, args):
+async def show_admins(msg, args):
     return await show_list(msg, args, "admin")
 
 
