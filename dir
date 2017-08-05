@@ -9,9 +9,11 @@ dir;weather
 dir;admin_comands
 dir;send_out
 dir;exchange_rate
+dir;conf_members
 dir;available_cmds
 dir;news
 dir;field_of_miracles
+dir;who_is_
 dir;random_fun
 dir;memes
 dir;bot_about
@@ -23,4 +25,5 @@ dir;qr_generator
 dir;mirror
 dir;birthday
 dir;friends
+dir;love_cam
 dir;site_screenshot

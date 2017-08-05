@@ -1,8 +1,9 @@
+import io
+
+import qrcode
 from qrcode.exceptions import DataOverflowError
 
 from plugin_system import Plugin
-import qrcode
-import io
 plugin = Plugin("QRCode генератор",
                 usage=["qr [текст / ссылка] - генерирует QR код с вашим текстом"])
 

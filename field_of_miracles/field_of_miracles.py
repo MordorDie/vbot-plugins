@@ -1,7 +1,7 @@
 import random
 
-from plugin_system import Plugin
 from database import *
+from plugin_system import Plugin
 
 plugin = Plugin('Поле чудес',
                 usage=['поле чудес - чтобы начать игру',
@@ -154,13 +154,12 @@ async def main(msg, args):
 
 @plugin.on_command('поле чудес сдаюсь', 'поле чудес сдаться')
 async def give_up(msg, args):
-    await plugin.unlock(msg.user)
-    await plugin.set_user_status(msg.user, 0)
+    if plugin.is_mine(msg.user):
+        await plugin.clear_user(msg.user)
 
-    d = await get_or_none(FOMData, user_id=msg.user_id)
-
-    if d:
-        await msg.answer(f"Ваше слово: \"{d.answer}\"")
+        d = await get_or_none(FOMData, user_id=msg.user_id)
+        if d:
+            await msg.answer(f"Ваше слово: \"{d.answer}\"")
 
     await plugin.set_user_status(msg.user, 1)
 

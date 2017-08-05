@@ -1,8 +1,6 @@
 import datetime
 
 from plugin_system import Plugin
-from dateutil import parser
-
 from utils import plural_form, age
 from vkplus import MAX_MESSAGE_LENGTH
 
