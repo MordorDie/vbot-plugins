@@ -4,7 +4,7 @@ from plugin_system import Plugin
 from utils import load_settings
 from database import *
 
-plugin = Plugin('Видео группы', usage=['Для получения в ЛС видео введите: видео'])
+plugin = Plugin('Видео группы', usage='случайное видео - прислать случайное видео из группы')
 
 
 class UserVideos(BaseModel):
@@ -16,7 +16,6 @@ UserVideos.create_table(True)
 
 @plugin.on_init()
 async def check_group_videos(vk):
-    # await send_videos(vk)
     plugin.temp_data['s'] = load_settings(plugin)
     # Получаем количество видео в группе
     values = {
@@ -49,7 +48,6 @@ async def send_videos(msg, args):
     attachment = ','.join(video_list)
     user.video_list += attachment + ','
     user.save()
-    print(user.video_list)
     await msg.answer('Приятного просмотра!', attachment=attachment)
 
 
